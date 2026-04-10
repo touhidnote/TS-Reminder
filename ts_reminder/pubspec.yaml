@@ -1,9 +1,6 @@
 name: ts_reminder
-description: "TS Reminder app for study and reminders"
-
-# Prevent publishing to pub.dev (private project)
+description: "TS Reminder App"
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -13,28 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # State management
-  provider: ^6.1.6
-
-  # Local storage
-  shared_preferences: ^2.1.1
-
-  # Local notifications
-  flutter_local_notifications: ^14.0.0
-
-  # Cupertino icons (iOS style icons)
   cupertino_icons: ^1.0.8
+  provider: ^6.0.5
+  shared_preferences: ^2.1.1
+  flutter_local_notifications: ^13.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
 
-  # Assets for sounds/images
   assets:
-    - assets/sounds/
-    - assets/images/
+    - assets/sounds/alert.mp3
