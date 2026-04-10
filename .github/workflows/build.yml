@@ -1,34 +1,30 @@
-name: Build APK
-on: [push]
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: subosito/flutter-action@v2
         with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          cache: true
+          flutter-version: '3.41.6'
 
       - name: Install dependencies
-        working-directory: ts_reminder   # <-- Add this line
         run: flutter pub get
 
-      - name: Build APK
-        working-directory: ts_reminder   # <-- Add this line
-        run: flutter build apk --debug
+      - name: Analyze code
+        run: flutter analyze
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          path: ts_reminder/build/app/outputs/flutter-apk/app-debug.apk
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --debug
