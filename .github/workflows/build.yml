@@ -5,26 +5,46 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+    name: Build Flutter App
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repo
       - uses: actions/checkout@v4
 
+      # 2. Setup Flutter
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.41.6'
+          flutter-version: '3.41.6'  # Change to your Flutter version
 
+      # 3. Install dependencies inside ts_reminder folder
       - name: Install dependencies
+        working-directory: ts_reminder
         run: flutter pub get
 
+      # 4. Analyze code
       - name: Analyze code
+        working-directory: ts_reminder
         run: flutter analyze
 
+      # 5. Run tests
       - name: Run tests
+        working-directory: ts_reminder
         run: flutter test
 
+      # 6. Build APK
       - name: Build APK
+        working-directory: ts_reminder
         run: flutter build apk --debug
+
+      # 7. Optionally upload APK artifact
+      # - name: Upload APK
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ts_reminder-debug-apk
+      #     path: ts_reminder/build/app/outputs/flutter-apk/app-debug.apk
