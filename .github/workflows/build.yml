@@ -1,44 +1,34 @@
-name: Build Android APK
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+name: Build APK
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout your repository
       - uses: actions/checkout@v4
 
-      # Setup Java 17 for Android Gradle
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          channel: 'stable'
           cache: true
 
-      # Get dependencies
       - name: Install dependencies
+        working-directory: ts_reminder   # <-- Add this line
         run: flutter pub get
 
-      # Build APK in debug mode (faster)
       - name: Build APK
+        working-directory: ts_reminder   # <-- Add this line
         run: flutter build apk --debug
 
-      # Upload APK as artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ts-reminder-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: debug-apk
+          path: ts_reminder/build/app/outputs/flutter-apk/app-debug.apk
